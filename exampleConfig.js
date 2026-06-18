@@ -140,8 +140,8 @@ email: {
     bcc: "bcc-email@example.com", // OPTIONAL
     // Accepted optional configs: cc, bcc, replyTo, from
     template: {
-    text: HtmlService.createTemplateFromFile('monthlySalary_txt'),// REQUIRED
-    html: HtmlService.createTemplateFromFile('monthlySalary'), // REQUIRED
+    text: HtmlService.createTemplateFromFile('example_txt'),// REQUIRED
+    html: HtmlService.createTemplateFromFile('example'), // REQUIRED
     },
     // Optional
     debug: {
@@ -167,5 +167,3 @@ ui: {
  */
 function exampleConfig() {
 }
-
-exampleConfig()
