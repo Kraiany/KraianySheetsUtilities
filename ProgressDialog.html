@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <style>
+      body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; background-color: #f4f6f9; padding: 12px; }
+      #logContainer { border: 1px solid #d1d5db; background: #ffffff; padding: 15px; height: 250px; overflow-y: auto; border-radius: 6px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+      .log-item { display: none; margin-bottom: 6px; line-height: 1.4; color: #374151; }
+      .sub-item { margin-left: 24px; color: #4b5563; font-size: 12px; }
+    </style>
+
+    <script>
+      // Track how many lines we have already rendered to the screen
+      let renderedLinesCount = 0;
+      let pollingInterval;
+
+      // jQuery Document Ready Wrapper
+      $(document).ready(function() {
+        // Start polling the Google Apps Script backend every 1200ms
+        pollingInterval = setInterval(fetchNewLogs, 1200);
+      });
+
+      function fetchNewLogs() {
+        google.script.run
+          .withSuccessHandler(function(rawLogData) {
+            if (!rawLogData) return;
+
+            // Split the cached log string into an array of individual action strings
+            // We use identity delimiters "||" set up in our Code.gs file
+            const lines = rawLogData.split("||").filter(Boolean);
+
+            // If there are new lines available that we haven't drawn yet
+            if (lines.length > renderedLinesCount) {
+              
+              // Loop through only the brand new entries
+              for (let i = renderedLinesCount; i < lines.length; i++) {
+                const lineContent = lines[i];
+                
+                // Create a hidden element, append it, and fade it in 
+                const $newItem = $(lineContent).addClass('log-item');
+                $('#logContainer').append($newItem);
+                $newItem.fadeIn(300);
+
+                // Stop the loop if the finish token arrives
+                if (lineContent.indexOf("<!-- PROCESS_END -->") !== -1) {
+                  clearInterval(pollingInterval);
+                }
+              }
+
+              // Update our pointer tracker
+              renderedLinesCount = lines.length;
+
+              // Smoothly auto-scroll the jQuery element container container to the bottom
+              const $container = $('#logContainer');
+              $container.animate({ scrollTop: $container[0].scrollHeight }, 400);
+            }
+          })
+          .getLiveDeliveryLog();
+      }
+    </script>
+  </head>
+  <body>
+    <div id="logContainer">
+      <div style="color: #9ca3af; font-style: italic;">Initialising jQuery stream...</div>
+    </div>
+  </body>
+</html>
