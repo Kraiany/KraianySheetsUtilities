@@ -1,6 +1,10 @@
 # KraianySheetsUtilities
 
+[![GitHub](https://img.shields.io/badge/GitHub-Kraiany-blue)](https://github.com/Kraiany/KraianySheetsUtilities)
+
 A Google Apps Script utility collection for working with Google Sheets, Drive, PDF export, and email delivery workflows.
+
+**Repository**: https://github.com/Kraiany/KraianySheetsUtilities
 
 ## Project structure
 
@@ -54,8 +58,15 @@ clasp clone <scriptId>
 
 Then push or pull files using the Apps Script project ID.
 
-## Notes
+## Getting the code
 
-- This repository has no automated tests included.
-- Test and run functions directly in the Apps Script editor against a development spreadsheet.
-- Add a `LICENSE` file if you want to define usage terms.
+Clone this repository:
+
+```bash
+git clone https://github.com/Kraiany/KraianySheetsUtilities.git
+cd KraianySheetsUtilities
+```
+
+## License
+
+This project is maintained by Kraiany. See LICENSE file for details.
